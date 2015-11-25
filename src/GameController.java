@@ -1,24 +1,35 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class GameController extends JFrame {
+public class GameController extends JPanel {
 	
-	JPanel p = new JPanel();
-	
-	public static void main(String[] args) {
-		new GameController();
+	public static void main(String[] args)
+	{
+		JFrame frame = new JFrame("Game");
+		frame.setSize(800,600);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		
+		GameController panel = new GameController();
+		
+		frame.add(panel);	
+		
+		frame.setVisible(true);
 	}
 	
-	public GameController(){
-		super("Game");
-		setSize(800,600);
-		setResizable(false);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		
-		add(p);
-		
-		setVisible(true);
-	}
+	public GameController(){}
 
+	@Override
+	protected void paintComponent(Graphics g) {
+		g.setColor(Color.WHITE);
+		g.fillRect(0,0,getWidth(),getHeight());
+		g.setColor(Color.ORANGE);
+		g.fillRect(10, 10, 50, 50);
+	}
+	
+	
 }
