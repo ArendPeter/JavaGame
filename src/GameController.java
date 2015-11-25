@@ -6,12 +6,8 @@ import javax.swing.JPanel;
 
 public class GameController extends JPanel{
 
-	KeyboardController keyboard;
+	Player player;
 
-	short playerX = 20;
-	short playerY = 20;
-	int speed = 10;
-	
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame("Game");
@@ -31,8 +27,8 @@ public class GameController extends JPanel{
 	}
 	
 	public GameController(){
-		keyboard = new KeyboardController();
-		this.addKeyListener(keyboard);
+		player = new Player(10,10);
+		this.addKeyListener(KeyboardController.getInstance());
 		new Thread(){
 		  public void run(){
 			try{
@@ -48,26 +44,16 @@ public class GameController extends JPanel{
 	}
 	
 	private void gameLoop(){
-		if(keyboard.isUpHeld()){
-			playerY-=speed;
-		}
-		if(keyboard.isDownHeld()){
-			playerY+=speed;
-		}
-		if(keyboard.isLeftHeld()){
-			playerX-=speed;
-		}
-		if(keyboard.isRightHeld()){
-			playerX+=speed;
-		}
+		player.loop();
 		repaint();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
+		//fill background
 		g.setColor(Color.WHITE);
 		g.fillRect(0,0,getWidth(),getHeight());
-		g.setColor(Color.ORANGE);
-		g.fillRect(playerX, playerY, 50, 50);
+
+		player.draw(g);
 	}
 }

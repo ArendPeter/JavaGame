@@ -3,11 +3,22 @@ import java.awt.event.KeyListener;
 
 public class KeyboardController implements KeyListener {
 
+	private static KeyboardController instance;
+
+	public static KeyboardController getInstance(){
+		if(instance == null){
+			instance = new KeyboardController();
+		}
+		return instance;
+	}
+
 	private boolean leftHeld = false;
 	private boolean rightHeld = false;
 	private boolean upHeld = false;
 	private boolean downHeld = false;
-	
+
+	private KeyboardController(){}
+
 	@Override
 	public void keyPressed(KeyEvent e) {
 	  switch(e.getKeyCode())	{
