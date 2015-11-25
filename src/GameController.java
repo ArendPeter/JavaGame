@@ -10,6 +10,7 @@ public class GameController extends JPanel{
 
 	Player player;
 	Solid[] solids;
+	Enemy enemy;
 
 	public static void main(String[] args)
 	{
@@ -31,13 +32,18 @@ public class GameController extends JPanel{
 	
 	public GameController(){
 		instance = this;
+
 		player = new Player(64,64);
+
 		solids = new Solid[5];
 		solids[0] = new Solid(128,128);
 		solids[1] = new Solid(64,256);
-		solids[2] = new Solid(128,256);
+		solids[2] = new Solid(512,256);
 		solids[3] = new Solid(256,64);
 		solids[4] = new Solid(256,512);
+		
+		enemy = new Enemy(128,256);
+		
 		this.addKeyListener(KeyboardController.getInstance());
 		new Thread(){
 		  public void run(){
@@ -55,6 +61,7 @@ public class GameController extends JPanel{
 	
 	private void gameLoop(){
 		player.loop();
+		enemy.loop();
 		repaint();
 	}
 
@@ -68,5 +75,6 @@ public class GameController extends JPanel{
 		for(int i = 0; i < solids.length; i++){
 			solids[i].draw(g);
 		}
+		enemy.draw(g);
 	}
 }
