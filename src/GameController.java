@@ -1,10 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class GameController extends JPanel {
+public class GameController extends JPanel{
+
+	int playerX = 10;
+	int playerY = 10;
 	
 	public static void main(String[] args)
 	{
@@ -21,15 +26,31 @@ public class GameController extends JPanel {
 		frame.setVisible(true);
 	}
 	
-	public GameController(){}
+	public GameController(){
+		new Thread(){
+		  public void run(){
+			try{
+				while(true){
+					gameLoop();
+					Thread.sleep(33);
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}  
+		  }
+		}.start();
+	}
+	
+	private void gameLoop(){
+		playerX += 10;
+		repaint();
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0,0,getWidth(),getHeight());
 		g.setColor(Color.ORANGE);
-		g.fillRect(10, 10, 50, 50);
+		g.fillRect(playerX, playerY, 50, 50);
 	}
-	
-	
 }
