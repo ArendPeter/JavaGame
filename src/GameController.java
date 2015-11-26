@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,6 +12,7 @@ public class GameController extends JPanel{
 	Player player;
 	Solid[] solids;
 	Enemy enemy;
+	ArrayList<GameObject> gameObjects;
 
 	public static void main(String[] args)
 	{
@@ -33,16 +35,17 @@ public class GameController extends JPanel{
 	public GameController(){
 		instance = this;
 
-		player = new Player(64,64);
+		gameObjects = new ArrayList<GameObject>();
 
-		solids = new Solid[5];
-		solids[0] = new Solid(128,128);
-		solids[1] = new Solid(64,256);
-		solids[2] = new Solid(512,256);
-		solids[3] = new Solid(256,64);
-		solids[4] = new Solid(256,512);
+		gameObjects.add(new Player(64,64));
+
+		gameObjects.add(new Solid(128,128));
+		gameObjects.add(new Solid(64,256));
+		gameObjects.add(new Solid(512,256));
+		gameObjects.add(new Solid(256,64));
+		gameObjects.add(new Solid(256,512));
 		
-		enemy = new Enemy(128,256);
+		gameObjects.add(new Enemy(128,256));
 		
 		this.addKeyListener(KeyboardController.getInstance());
 		new Thread(){
@@ -60,8 +63,9 @@ public class GameController extends JPanel{
 	}
 	
 	private void gameLoop(){
-		player.loop();
-		enemy.loop();
+		for(int i = 0; i < gameObjects.size(); i++){
+			gameObjects.get(i).loop();
+		}
 		repaint();
 	}
 
@@ -71,10 +75,8 @@ public class GameController extends JPanel{
 		g.setColor(Color.WHITE);
 		g.fillRect(0,0,getWidth(),getHeight());
 
-		player.draw(g);
-		for(int i = 0; i < solids.length; i++){
-			solids[i].draw(g);
+		for(int i = 0; i < gameObjects.size(); i++){
+			gameObjects.get(i).draw(g);
 		}
-		enemy.draw(g);
 	}
 }
