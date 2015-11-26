@@ -9,6 +9,6 @@ public class Solid extends GameObject{
 
 	public void draw(Graphics g){
 		g.setColor(Color.BLACK);
-		g.fillRect(x, y, width, height);
+		g.fillRect(rect.x, rect.y, rect.width, rect.height);
 	}
 }

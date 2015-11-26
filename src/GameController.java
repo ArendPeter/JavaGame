@@ -39,7 +39,7 @@ public class GameController extends JPanel{
 
 		gameObjects.add(new Player(64,64));
 
-		gameObjects.add(new Solid(128,128));
+		//gameObjects.add(new Solid(128,128));
 		gameObjects.add(new Solid(64,256));
 		gameObjects.add(new Solid(512,256));
 		gameObjects.add(new Solid(256,64));
@@ -65,6 +65,8 @@ public class GameController extends JPanel{
 	private void gameLoop(){
 		for(int i = 0; i < gameObjects.size(); i++){
 			gameObjects.get(i).loop();
+			gameObjects.get(i).checkCollisions();
+			gameObjects.get(i).applyMovement();
 		}
 		repaint();
 	}
