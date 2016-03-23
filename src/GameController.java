@@ -13,6 +13,20 @@ public class GameController extends JPanel{
 
 	private HashMap<Integer,GameObject> objects;
 	private ArrayList<GameObject> objectsToDelete;
+	
+	private int blockWidth = 64;
+	private int blockHeight = 64;
+	private char[][] lvl = {//'p', '-', 's', 'e', 'c'
+		{'s','s','s','s','s','s','s','s','s','s','s','s'},
+		{'s','-','-','-','-','-','-','-','-','-','-','s'},
+		{'s','-','-','p','-','s','-','c','-','-','-','s'},
+		{'s','-','-','-','-','-','-','-','-','-','-','s'},
+		{'s','-','s','-','-','e','-','-','-','s','-','s'},
+		{'s','-','-','-','-','-','-','-','-','-','-','s'},
+		{'s','-','-','c','-','s','-','c','-','-','-','s'},
+		{'s','-','-','-','-','-','-','-','-','-','-','s'},
+		{'s','s','s','s','s','s','s','s','s','s','s','s'},
+	};
 
 	public static void main(String[] args)
 	{
@@ -33,23 +47,35 @@ public class GameController extends JPanel{
 	}
 	
 	public GameController(){
+		initVariables();
+		loadLevel();
+		startGame();
+	}
+	
+	private void initVariables(){
 		instance = this;
-
 		objects = new HashMap<Integer,GameObject>();
 		objectsToDelete = new ArrayList<GameObject>();
-
-		addObject(new Player(64,64));
-
-		addObject(new Solid(64,256));
-		addObject(new Solid(512,256));
-		addObject(new Solid(256,64));
-		addObject(new Solid(256,512));
-		
-		addObject(new Enemy(128,256));
-		
-		addObject(new Coin(128,128));
-		
 		this.addKeyListener(KeyboardController.getInstance());
+	}
+	
+	private void loadLevel(){
+		for(int i = 0; i < lvl.length; i++){
+			for(int j = 0; j < lvl[i].length; j++){
+				int x = j * blockWidth;
+				int y = i * blockHeight;
+				switch(lvl[i][j]){
+				case '-': break;
+				case 's': addObject(new Solid(x,y)); break;
+				case 'p': addObject(new Player(x,y)); break;
+				case 'c': addObject(new Coin(x,y)); break;
+				case 'e': addObject(new Enemy(x,y)); break;
+				}
+			}
+		}
+	}
+	
+	private void startGame(){
 		new Thread(){
 		  public void run(){
 			try{
@@ -85,8 +111,8 @@ public class GameController extends JPanel{
 		g.setColor(Color.WHITE);
 		g.fillRect(0,0,getWidth(),getHeight());
 
-		for(int i = 0; i < objects.size(); i++){
-			objects.get(i).draw(g);
+		for(GameObject obj : objects.values()){
+			obj.draw(g);
 		}
 	}
 	
