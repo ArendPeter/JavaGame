@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,10 +11,8 @@ public class GameController extends JPanel{
 
 	public static GameController instance;
 
-	Player player;
-	Solid[] solids;
-	Enemy enemy;
-	ArrayList<GameObject> gameObjects;
+	private HashMap<Integer,GameObject> objects;
+	private ArrayList<GameObject> objectsToDelete;
 
 	public static void main(String[] args)
 	{
@@ -35,17 +35,19 @@ public class GameController extends JPanel{
 	public GameController(){
 		instance = this;
 
-		gameObjects = new ArrayList<GameObject>();
+		objects = new HashMap<Integer,GameObject>();
+		objectsToDelete = new ArrayList<GameObject>();
 
-		gameObjects.add(new Player(64,64));
+		addObject(new Player(64,64));
 
-		//gameObjects.add(new Solid(128,128));
-		gameObjects.add(new Solid(64,256));
-		gameObjects.add(new Solid(512,256));
-		gameObjects.add(new Solid(256,64));
-		gameObjects.add(new Solid(256,512));
+		addObject(new Solid(64,256));
+		addObject(new Solid(512,256));
+		addObject(new Solid(256,64));
+		addObject(new Solid(256,512));
 		
-		gameObjects.add(new Enemy(128,256));
+		addObject(new Enemy(128,256));
+		
+		addObject(new Coin(128,128));
 		
 		this.addKeyListener(KeyboardController.getInstance());
 		new Thread(){
@@ -63,11 +65,17 @@ public class GameController extends JPanel{
 	}
 	
 	private void gameLoop(){
-		for(int i = 0; i < gameObjects.size(); i++){
-			gameObjects.get(i).loop();
-			gameObjects.get(i).checkCollisions();
-			gameObjects.get(i).applyMovement();
+		for(GameObject obj : objects.values()){
+			obj.loop();
+			obj.checkCollisions();
+			obj.applyMovement();
 		}
+		
+		for(GameObject obj : objectsToDelete){
+			objects.remove(obj.getId());
+		}
+		objectsToDelete.clear();
+
 		repaint();
 	}
 
@@ -77,8 +85,20 @@ public class GameController extends JPanel{
 		g.setColor(Color.WHITE);
 		g.fillRect(0,0,getWidth(),getHeight());
 
-		for(int i = 0; i < gameObjects.size(); i++){
-			gameObjects.get(i).draw(g);
+		for(int i = 0; i < objects.size(); i++){
+			objects.get(i).draw(g);
 		}
+	}
+	
+	public Collection<GameObject> getObjects(){
+		return objects.values();
+	}
+	
+	private void addObject(GameObject obj){
+		objects.put(obj.getId(), obj);
+	}
+	
+	public void removeObject(GameObject obj){
+		objectsToDelete.add(obj);
 	}
 }

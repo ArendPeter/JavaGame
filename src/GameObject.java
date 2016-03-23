@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class GameObject {
 	protected Rectangle rect;
 	protected int dx, dy;
+	protected int id;
+	
+	protected static int next_id = 0;
 	
 	public GameObject(int x, int y){
 		this(x,y,32,32);
@@ -14,21 +17,20 @@ public class GameObject {
 		rect = new Rectangle(x,y,width,height);
 		dx = 0;
 		dy = 0;
+		id = getNewId();
 	}
 	
 	public void loop(){}
 
 	public void checkCollisions(){
-		ArrayList<GameObject> objs = GameController.instance.gameObjects;
-		for(int i = 0; i < objs.size(); i++){
-			if(objs.get(i)==this){
+		for(GameObject obj : GameController.instance.getObjects()){
+			if(obj==this){
 				continue;
 			}
-			if(rectOverlap(rect,objs.get(i).getRect())){
-				collideWith(objs.get(i));
+			if(rectOverlap(rect,obj.getRect())){
+				collideWith(obj);
 			}
 		}
-
 	}
 	
 	protected boolean rectOverlap(Rectangle r1, Rectangle r2){
@@ -64,5 +66,17 @@ public class GameObject {
 
 	public Rectangle getRect() {
 		return rect;
+	}
+	
+	protected static int getNewId(){
+		return next_id++;
+	}
+	
+	public int getId(){
+		return id;
+	}
+	
+	protected void delete(){
+		GameController.instance.removeObject(this);
 	}
 }

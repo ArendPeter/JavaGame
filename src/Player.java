@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Player extends GameObject{
 	private int startX, startY;
 	private int speed = 16;
+	private int points = 0;
 
 	public Player(){
 		this(0,0);
@@ -51,5 +52,12 @@ public class Player extends GameObject{
 	public void draw(Graphics g){
 		g.setColor(Color.ORANGE);
 		g.fillRect(rect.x, rect.y, rect.width, rect.height);
+		g.setColor(Color.WHITE);
+		g.drawString(points+"", (int)rect.getCenterX(), 
+			(int)rect.getCenterY());
+	}
+	
+	public void gainPoint(){
+		points++;
 	}
 }

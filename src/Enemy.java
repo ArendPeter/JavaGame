@@ -6,7 +6,7 @@ public class Enemy extends GameObject{
 
 	public Enemy(int x, int y) {
 		super(x,y,64,64);
-		dx = 16;
+		dx = 8;
 	}
 	
 	protected void collideWith(GameObject obj){
