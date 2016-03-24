@@ -7,12 +7,16 @@ public class Player extends GameObject{
 	private int speed = 16;
 	private int points = 0;
 
+	private float frame = 0;
+	private int numFrames = 10;
+	private float frameSpeed = .2f;
+
 	public Player(){
 		this(0,0);
 	}
 
 	public Player(int x, int y) {
-		super(x,y,64,64,"player");
+		super(x,y,64,64,"player_anim");
 		startX = x;
 		startY = y;
 	}
@@ -34,6 +38,13 @@ public class Player extends GameObject{
 		if(keyboard.isRightHeld()){
 			dx=speed;
 		}
+		
+		if(dx != 0 || dy != 0){
+			frame+=frameSpeed;
+			if(frame > numFrames){
+				frame -= numFrames;
+			}
+		}
 	}
 	
 	protected void collideWith(GameObject obj){
@@ -50,7 +61,12 @@ public class Player extends GameObject{
 	}
 	
 	public void draw(Graphics g){
-		super.draw(g);
+		g.drawImage(Resources.getInstance().getImage(imgName), 
+			(int)rect.getMinX(), (int)rect.getMinY(), 
+			(int)rect.getMaxX(), (int)rect.getMaxY(), 
+			(int)frame * (int)rect.getWidth(), 0,
+			((int)frame+1) * (int)rect.getWidth(), (int)rect.getHeight(),
+			null);
 		g.setColor(Color.BLACK);
 		g.drawString(points+"", 80, 80);
 	}
