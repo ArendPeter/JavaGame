@@ -6,18 +6,24 @@ public class GameObject {
 	protected Rectangle rect;
 	protected int dx, dy;
 	protected int id;
+	protected String imgName;
 	
 	protected static int next_id = 0;
 	
 	public GameObject(int x, int y){
-		this(x,y,32,32);
+		this(x,y,32,32,"");
 	}
 
 	public GameObject(int x, int y, int width, int height){
+		this(x,y,width,height,"");
+	}
+
+	public GameObject(int x, int y, int width, int height, String imgName){
 		rect = new Rectangle(x,y,width,height);
 		dx = 0;
 		dy = 0;
 		id = getNewId();
+		this.imgName = imgName;
 	}
 	
 	public void loop(){}
@@ -46,7 +52,12 @@ public class GameObject {
 		rect.y += dy;
 	}
 
-	public void draw(Graphics g){}
+	public void draw(Graphics g){
+		if(imgName != ""){
+			g.drawImage(Resources.getInstance().getImage(imgName), 
+				rect.x, rect.y, null);
+		}
+	}
 
 	public int getX() {
 		return (int) rect.x;

@@ -12,7 +12,7 @@ public class Player extends GameObject{
 	}
 
 	public Player(int x, int y) {
-		super(x,y,64,64);
+		super(x,y,64,64,"player");
 		startX = x;
 		startY = y;
 	}
@@ -50,11 +50,9 @@ public class Player extends GameObject{
 	}
 	
 	public void draw(Graphics g){
-		g.setColor(Color.ORANGE);
-		g.fillRect(rect.x, rect.y, rect.width, rect.height);
-		g.setColor(Color.WHITE);
-		g.drawString(points+"", (int)rect.getCenterX(), 
-			(int)rect.getCenterY());
+		super.draw(g);
+		g.setColor(Color.BLACK);
+		g.drawString(points+"", 80, 80);
 	}
 	
 	public void gainPoint(){

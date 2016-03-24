@@ -7,15 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Coin extends GameObject {
-	BufferedImage img;
-
 	public Coin(int x, int y) {
-		super(x, y);
-		try{
-			img = ImageIO.read(new File("img/coin.png"));
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		super(x, y,32,32,"coin");
 	}
 	
 	public void gameLoop(){
@@ -29,12 +22,4 @@ public class Coin extends GameObject {
 			delete();
 		}
 	}
-	
-	
-	public void draw(Graphics h){
-		/*h.setColor(Color.yellow);
-		h.fillOval(rect.x, rect.y, rect.width, rect.height);*/
-		h.drawImage(img, rect.x, rect.y, null);
-	}
-	
 }
